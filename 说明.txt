@@ -1,0 +1,86 @@
+
+查看当前路径：pwd，并确保在自己用户名目录，如我的用户名 hzping , 用户名目录为：/home/hzping  
+	如果发现不再自己目录，直接输入 cd 命令，并回车即可 回到自己的用户名目录
+
+使用步骤，3步
+
+第一步，建立推流频道配置模版文件，其中【油管频道名称】对应 自己的频道名称，每新开一个频道都需要独立创建一个配置文件，复制执行下面命令即可：
+
+cp streamrecorder/demo.config  streamrecorder/config/油管频道名称.config
+
+第二步，配置这个频道的参数，使用 FinalShell 下方的文件管理器，在config目录下找到 对应频道名字的 配置文件，鼠标 右键菜单->打开 稍等片刻，弹出如下内容并编辑：
+	Interval=30
+	LoopOrOnce=once
+	Autobackup=off
+	Backupmethod=baidu
+	Saveformat=ts
+	StreamOrRecord=stream
+	Streamlink=https://www.twitch.tv/mathil1
+	Rtmpurl=rtmp://a.rtmp.youtube.com/live2/bz3t-5fza-qhsc-948t
+	Myyoutube=UCscbK30W0p_sI18h8vvoTWg
+
+	具体参数说明:  
+	  > Interval  
+	  此参数是开播检测的时间间隔，直到检测到一个有效开播源，默认30，即30秒  
+	  > LoopOrOnce  
+	  可选: loop/once 此参数决定程序是一直运行loop 还是单次运行once，这里的运行是指成功推流一个视频源 
+	  > Autobackup
+	  可选: on/off，此参数是自动备份开关，选择on则视频录制后会自动备份到指定网盘并删除本地文件,目前暂未测试通过，请不要开启  
+	  > Backupmethod  
+	  可选: rclone/baidu/both，此参数决定备份方式，可以是rclone或者BaiduPCS-Go，备份到onedrive或者度盘 ，用于单独设置某个频道的备份方式  
+	  > StreamOrRecord  
+	  可选: stream/record/both，此参数决定是推流还是录制，或者二者兼顾，用于单独设置某个频道是推流还是录制  
+	  > Saveformat  
+	  可选: ts/mp4，此参数是视频录制的文件格式  
+
+	  推流来源配置，5种途径至少算一种： 
+	  1> Twitch  
+	  twitch频道的地址，只需要填写频道ID，如rin_co_co  
+	  2> Streamlink
+	  streamlink 支持的直播频道的地址，完整URL地址，如：https://www.twitch.tv/mathil1
+
+	  3> Youtube  
+	  youtube频道的地址，需要注意的是只需要填写频道ID，如UC1opHUrw8rvnsadT-iGp7Cg  
+	  4> Bilibili  
+	  bilibili频道的地址，只需要填写频道ID，如14917277   
+	  5> Twitcast  
+	  twitcasting频道的地址,【注意目前仅支持录制】，只需要填写频道ID，如c:rin_co  
+	  
+	  6> Megapan
+	  Mega网盘上的视频路径
+
+	  > Rtmpurl  
+	  此参数是推流地址，用于单独设置某个频道的推流地址
+	  如rtmp://a.rtmp.youtube.com/live2/bz3t-5fza-qhsc-948t  
+	   
+	  > Myyoutube
+	  推流到对应频道的频道ID，判断直播状态，需要注意的是只需要填写频道ID，必须要填且要跟自己的频道对应
+
+第三步：启动推流并加载推流配置文件,复制并执行下面命令
+
+./streamrecorder/autorun.sh
+
+
+可选： 停止单个频道推流：复制并执行下面命令
+./streamrecorder/closescreen.sh
+
+选择对于频道名字 复制粘贴回车 即可停止
+
+
+录制视频 配合Mega网盘 推流使用步骤：
+1、注册账号，上传视频
+2、在推流服务器登陆网盘账号，执行下面对应登陆命令：
+	mega-login 网盘账号 网盘密码
+
+3、在对应频道配置文件中配置录制的推流视频，增加配置项：
+Megapan=视频对应的网盘路径
+	如：Megapan=macd/平哥/IMG_0207.mp4
+
+4、启动推流并加载推流配置文件,复制并执行下面命令
+./streamrecorder/autorun.sh
+
+
+
+
+
+
